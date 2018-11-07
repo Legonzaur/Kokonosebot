@@ -1,5 +1,5 @@
 const Commando = require('discord.js-commando');
-const private = require('/token.json');
+const private = require('./private.json');
 
 const client = new Commando.Client({
     owner: '268494575780233216'
@@ -26,5 +26,15 @@ const sqlite = require('sqlite');
 client.setProvider(
     sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
 ).catch(console.error);   
+
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+  });
+  
+  client.on('message', msg => {
+    if (msg.content === 'ping') {
+      msg.reply('pong');
+    }
+  });
 
 client.login(private.token);
