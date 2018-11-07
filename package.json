@@ -1,0 +1,27 @@
+{
+  "name": "kokonosebot",
+  "version": "3.0.0",
+  "description": "Bot for the French Kagerou Project Discord server",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Legonzaur/Kokonosebot.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Legonzaur",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/Legonzaur/Kokonosebot/issues"
+  },
+  "homepage": "https://github.com/Legonzaur/Kokonosebot#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "discord.js-commando": "^0.10.0",
+    "sqlite": "^3.0.0"
+  }
+}
