@@ -1,5 +1,6 @@
 const Commando = require('discord.js-commando');
 const private = require('./private.json');
+const lib = require('./lib/emojis.js');
 
 const client = new Commando.Client({
     owner: '268494575780233216'
@@ -10,9 +11,7 @@ const path = require('path');
 client.registry
     // Registers your custom command groups
     .registerGroups([
-        ['fun', 'Fun commands'],
-        ['some', 'Some group'],
-        ['other', 'Some other group']
+        ['emoji', 'Fun commands']
     ])
 
     // Registers all built-in groups, commands, and argument types
@@ -32,9 +31,14 @@ client.on('ready', () => {
   });
   
   client.on('message', msg => {
-    if (msg.content === 'ping') {
-      msg.reply('pong');
-    }
-  });
+      if(msg.author.bot){
+          return;
+      }
+    lib.writeEmoji(client, msg);
 
+  });
+  
+client.on('error', msg => {
+   console.log(msg);
+});
 client.login(private.token);
