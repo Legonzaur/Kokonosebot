@@ -4,15 +4,15 @@ const images = require('../../lib/images.js');
 module.exports = class ReplyCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'hug',
+            name: 'pat',
             group: 'emoji',
-            memberName: 'hug',
-            description: 'Hug someone !(つ ♥ ͜ʖ ♥)つ',
-            examples: ['hug'],
+            memberName: 'pat',
+            description: 'pat someone ! ✧･ﾟ: *✧･ﾟ♡*( ͡˘̴ ͜ ʖ̫ ͡˘̴ )*♡･ﾟ✧*:･ﾟ✧',
+            examples: ['pat'],
             args: [
                 {
                     key: 'user',
-                    prompt: 'Which user would you like to hug?',
+                    prompt: 'Which user would you like to pat?',
                     type: 'user',
                     default: 0
                 }
@@ -21,6 +21,6 @@ module.exports = class ReplyCommand extends Command {
     }
 
     run(msg, {user}) {
-        images.post(this.client, msg, 'hug', msg.author, user);
+        images.post(this.client, msg, 'pat', msg.author, user);  
     }
 };
