@@ -4,15 +4,15 @@ const images = require('../../lib/images.js');
 module.exports = class ReplyCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'punch',
+            name: 'chut',
             group: 'emoji',
-            memberName: 'punch',
-            description: 'punch someone ! (∩ ͡° ͜ʖ ͡°)⊃━☆─=≡Σ((( つ◕ل͜◕)つ',
-            examples: ['punch'],
+            memberName: 'chut',
+            description: 'chuts someone ',
+            examples: ['chut'],
             args: [
                 {
                     key: 'user',
-                    prompt: 'Which user would you like to punch?',
+                    prompt: 'Which user would you like to shhhh?',
                     type: 'user',
                     default: 0
                 }
@@ -21,6 +21,6 @@ module.exports = class ReplyCommand extends Command {
     }
 
     run(msg, {user}) {
-        images.post(this.client, msg, 'punch', msg.author, user);        
+        images.post(this.client, msg, 'chut', msg.author, user);
     }
 };
