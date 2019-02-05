@@ -31,7 +31,7 @@ client.on('ready', () => {
     const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'preferencies';").get();
     if (!table['count(*)']) {
         // If the table isn't there, create it and setup the database correctly.
-        sql.prepare("CREATE TABLE preferencies (id TEXT PRIMARY KEY, user TEXT, guild TEXT, BOOLEAN);").run();
+        sql.prepare("CREATE TABLE preferencies (id TEXT PRIMARY KEY, user TEXT, guild TEXT, customEmoji BOOLEAN);").run();
         // Ensure that the "id" row is always unique and indexed.
         sql.prepare("CREATE UNIQUE INDEX idx_preferencies_id ON preferencies (id);").run();
         sql.pragma("synchronous = 1");
