@@ -3,7 +3,7 @@ const privateVars = require('./private.json');
 const libEmojis = require('./lib/emojis.js');
 const libDB = require('./lib/db.js');
 const client = new Commando.Client({
-    owner: '268494575780233216'
+    owner: privateVars.owner
 });
 const path = require('path');
 client.registry
