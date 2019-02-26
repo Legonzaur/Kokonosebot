@@ -1,5 +1,5 @@
 const Commando = require('discord.js-commando');
-const private = require('./private.json');
+const privateVars = require('./private.json');
 const libEmojis = require('./lib/emojis.js');
 const libDB = require('./lib/db.js');
 const client = new Commando.Client({
@@ -54,4 +54,4 @@ client.on('ready', () => {
 client.on('error', msg => {
    console.log(msg);
 });
-client.login(private.token);
+client.login(privateVars.token);
