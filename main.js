@@ -1,22 +1,25 @@
+
+//init
 const Commando = require('discord.js-commando');
 const privateVars = require('./private.json');
-const libEmojis = require('./lib/emojis.js');
+const libOtherCommands = require('./lib/otherCommands.js');
 const libDB = require('./lib/db.js');
 const client = new Commando.Client({
-    owner: privateVars.owner
+  owner: privateVars.owner
 });
 const path = require('path');
 client.registry
-    // Registers your custom command groups
-    .registerGroups([
-        ['emoji', 'Fun commands']
-    ])
+  // Registers your custom command groups
+  .registerGroups([
+    ['emoji', 'Fun commands']
+  ])
 
-    // Registers all built-in groups, commands, and argument types
-    .registerDefaults()
+  // Registers all built-in groups, commands, and argument types
+  .registerDefaults()
 
-    // Registers all of your commands in the ./commands/ directory
-    .registerCommandsIn(path.join(__dirname, 'commands'));
+  // Registers all of your commands in the ./commands/ directory
+  .registerCommandsIn(path.join(__dirname, 'commands'));
+
 const sqlite = require('sqlite');
 client.setProvider(
     sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
@@ -36,20 +39,20 @@ client.on('ready', () => {
         sql.prepare("CREATE UNIQUE INDEX idx_preferencies_id ON preferencies (id);").run();
         sql.pragma("synchronous = 1");
         sql.pragma("journal_mode = wal");
-
-      }
-  });
+    }
+});
   
-  client.on('message', msg => {
-      if(msg.author.bot){
-          return;
-      }
-      if(!msg.guild){
-          return;
-      }
-    libEmojis.writeEmoji(client, msg);
-    
-  });
+client.on('message', msg => {
+  if(msg.author.bot || !msg.guild) //don't catch bot's messages
+      return;
+
+  //Emoji functions
+  libOtherCommands.writeEmoji(client, msg);
+
+  //jin and sidu mention functions
+  libOtherCommands.jinAndSidu(client, msg);
+  
+});
 
 client.on('error', msg => {
    console.log(msg);

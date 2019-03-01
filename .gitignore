@@ -1,7 +1,7 @@
 # Sqlite's temp files
 
-*-shm
-*-wal
+*shm
+*wal
 
 
 
