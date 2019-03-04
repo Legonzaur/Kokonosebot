@@ -14,4 +14,4 @@ Use this code as your will
 5. Yup, that's all
 6. Maybe
 
-This bot is under (slow) development.
+This bot is still under (slow) development.
