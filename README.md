@@ -10,4 +10,8 @@ Use this code as your will
 	```json {"token":"mytoken", "owner": "Your profile's id"} ```  
 3. execute ```npm i``` to download the dependencies.  
 	> note : the dependency "Sodium" requires the packages `libtool-bin` and `autoconf` in unix-like systems. You need to install them in your computer before running npm*  
-4. launch the bot with ```node main.js``` or with whatever you want (pm2...)
+4. launch the bot with ```node main.js``` or with whatever you want (pm2...)  
+5. Yup, that's all
+6. Maybe
+
+This bot is still under (slow) development.
