@@ -6,14 +6,15 @@ const libOtherCommands = require('./lib/otherCommands.js');
 const libDB = require('./lib/db.js');
 const client = new Commando.Client({
   owner: privateVars.owner,
-  commandPrefix: '$'
+  commandPrefix: '$',
 });
 const path = require('path');
 client.registry
   // Registers your custom command groups
   .registerGroups([
-    ['emoji', 'Fun commands'],
-    ['server', 'Kagerou Project Fr Commands']
+    ['emoji', 'Fun Commands'],
+    ['server', 'Kagerou Project Fr Commands'],
+    ['bot','Bot control Commmands']
   ])
 
   // Registers all built-in groups, commands, and argument types
@@ -35,19 +36,17 @@ client.on('ready', () => {
     const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'preferencies';").get();
     if (!table['count(*)']) {
         // If the table isn't there, create it and setup the database correctly.
-        sql.prepare("CREATE TABLE preferencies (id TEXT PRIMARY KEY, user TEXT, guild TEXT, customEmoji BOOLEAN)").run();
+        sql.exec("CREATE TABLE preferencies (id TEXT PRIMARY KEY, user TEXT, guild TEXT, customEmoji BOOLEAN)");
         // Ensure that the "id" row is always unique and indexed.
-        sql.prepare("CREATE UNIQUE INDEX idx_preferencies_id ON preferencies (id)").run();
+        sql.exec("CREATE UNIQUE INDEX idx_preferencies_id ON preferencies (id)");
         sql.pragma("synchronous = 1");
         sql.pragma("journal_mode = wal");
     }
     //do the same thing
     const jinTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'jinSiduMsg';").get();
     if (!jinTable['count(*)']) {
-        sql.prepare("CREATE TABLE jinSiduMsg (id TEXT PRIMARY KEY, user TEXT, msg TEXT)").run();
-        sql.prepare("CREATE UNIQUE INDEX idx_jinSiduMsg_id ON jinSiduMsg (id)").run();
-        sql.pragma("synchronous = 1");
-        sql.pragma("journal_mode = wal");
+        sql.exec("CREATE TABLE jinSiduMsg (id TEXT PRIMARY KEY, user TEXT, msg TEXT)");
+        sql.exec("CREATE UNIQUE INDEX idx_jinSiduMsg_id ON jinSiduMsg (id)");
     }
   //done
     console.log(`Logged in as ${client.user.tag}!`);
