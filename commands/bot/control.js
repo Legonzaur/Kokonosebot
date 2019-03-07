@@ -6,12 +6,12 @@ module.exports = class ReplyCommand extends Command {
       name: 'control',
       group: 'bot',
       memberName: 'control',
-      description: 'Restart or shutdown the bot',
-      examples: ['control restart', 'control stop'],
+      description: 'shutdown the bot',
+      examples: ['control stop'],
       guildOnly: true,
       args: [{
         key: 'action',
-        prompt: 'Action (restart or stop)',
+        prompt: 'Action ( stop)',
         type: 'string'
       }]
     });    
@@ -20,17 +20,11 @@ module.exports = class ReplyCommand extends Command {
   run(msg, { action }) {
     if (this.client.isOwner(msg.author)){
       switch (action){
-      case 'restart':
-        const privateVars = require('../../private.json');
-        msg.channel.send('Restarted~ (*if there were no error during the restart process*)')
-        .then(msg => this.client.destroy())
-        .then(() => this.client.login(privateVars.token));
-        break;
       case 'stop':
         msg.channel.send('Goodbye~').then(msg => this.client.destroy());
         break;
       default:
-        msg.channel.send("Wrong action. Use `restart` or `stop`.");
+        msg.channel.send("Wrong action. Use `stop`.");
       }
     } else
       msg.channel.send("You don't have the permission to use this command.");

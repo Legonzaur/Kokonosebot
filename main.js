@@ -43,18 +43,17 @@ client.on('ready', () => {
         sql.pragma("journal_mode = wal");
     }
     //do the same thing
-    const jinTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'jinSiduMsg';").get();
-    if (!jinTable['count(*)']) {
-        sql.exec("CREATE TABLE jinSiduMsg (id TEXT PRIMARY KEY, user TEXT, msg TEXT)");
-        sql.exec("CREATE UNIQUE INDEX idx_jinSiduMsg_id ON jinSiduMsg (id)");
-    }
+    //const jinTable = 
+    if (!sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'jinSiduMsg';").get()['count(*)'])
+      sql.exec("CREATE TABLE jinSiduMsg (user TEXT, msg TEXT)");
+
   //done
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`Logged in as ${client.user.tag} !`);
 });
   
 client.on('message', msg => {
   if (msg.author.bot || !msg.guild) //don't catch bot's messages
-      return;
+    return;
 
   //Emoji functions
   libOtherCommands.writeEmoji(client, msg);
@@ -67,4 +66,5 @@ client.on('message', msg => {
 client.on('error', msg => {
    console.log(msg);
 });
+
 client.login(privateVars.token);
