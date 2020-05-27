@@ -2,7 +2,7 @@ require("dotenv").config();
 const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-client.prefix = "=";
+client.prefix = process.env.DISCORD_PREFIX;
 
 client.commands = new Discord.Collection();
 const commandFiles = fs
@@ -33,7 +33,14 @@ client.on("message", (msg) => {
     command.execute(msg, args);
   } catch (error) {
     console.error(error);
-    msg.reply("there was an error trying to execute that command!");
+    msg.reply(
+      "Oops! Il y a une erreur! Un message a été envoyé à <@" +
+        process.env.DISCORD_OWNER_ID +
+        ">"
+    );
+    client.users.fetch(process.env.DISCORD_OWNER_ID).then((owner) => {
+      owner.send("```js\n" + error + "```");
+    });
   }
 });
 client.on("error", console.error);
