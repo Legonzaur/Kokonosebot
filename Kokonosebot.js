@@ -1,6 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const Discord = require("discord.js");
+
 const client = new Discord.Client();
 client.prefix = process.env.DISCORD_PREFIX;
 
@@ -20,7 +21,14 @@ client.once("ready", () => {
 });
 
 client.on("message", (msg) => {
-  if (!msg.content.startsWith(client.prefix) || msg.author.bot) return;
+  if (msg.author.bot) return;
+  var emojis = msg.content.match(/<:\w+:(\d+)>/g);
+
+  if (emojis) {
+    emojis = emojis.map((e) => e.match(/(?<=(\w):)\d+(?=>)/g)[0]);
+    console.log(msg.guild.emojis.resolve(emojis[0]));
+  }
+  if (!msg.content.startsWith(client.prefix)) return;
   const args = msg.content.slice(client.prefix.length).split(" ");
   const commandName = args.shift().toLowerCase();
   const command =

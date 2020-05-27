@@ -9,8 +9,11 @@
   "author": "Legonzaur",
   "license": "ISC",
   "dependencies": {
+    "bufferutil": "^4.0.1",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.4"
+    "mongodb": "^3.5.7",
+    "nodemon": "^2.0.4",
+    "zlib-sync": "^0.1.6"
   }
 }
