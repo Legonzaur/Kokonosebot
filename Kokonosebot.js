@@ -1,43 +1,39 @@
 require("dotenv").config();
-const { CommandoClient } = require("discord.js-commando");
-const path = require("path");
-const client = new CommandoClient({
-  commandPrefix: "$",
-  owner: "268494575780233216",
-  unknownCommandResponse: false,
-});
+const fs = require("fs");
+const Discord = require("discord.js");
+const client = new Discord.Client();
+client.prefix = "=";
 
-const albums = ["blush", "chut", "cry", "handhold", "pat", "hug"];
+client.commands = new Discord.Collection();
+const commandFiles = fs
+  .readdirSync("./commands")
+  .filter((file) => file.endsWith(".js"));
 
-const ImagesCommand = require("./customCommands/images");
-const images = new ImagesCommand(client);
-
-const imgur = require("./utils/imgur");
-imgur.registerImages(albums).then((value) => {
-  images.registerAlbums(value);
-});
-
-client.registry
-  .registerDefaultTypes()
-  //   .registerGroups([["images", "Provides you cute images of Kagepro members"]])
-  .registerDefaultGroups()
-  .registerDefaultCommands({
-    unknownCommand: false,
-  })
-  .registerCommandsIn(path.join(__dirname, "commands"));
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+  client.commands.get(command.name).client = client;
+}
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
-  //   client.user.setActivity("with Commando");
 });
 
 client.on("message", (msg) => {
-  if (msg.content.startsWith(client.commandPrefix)) {
-    msg.arguments = msg.content.substring(1).split(" ");
-    msg.command = msg.arguments.shift();
-    if (albums.includes(msg.command)) {
-      images.postRandomImage(msg);
-    }
+  if (!msg.content.startsWith(client.prefix) || msg.author.bot) return;
+  const args = msg.content.slice(client.prefix.length).split(" ");
+  const commandName = args.shift().toLowerCase();
+  const command =
+    client.commands.get(commandName) ||
+    client.commands.find(
+      (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+    );
+  if (!command) return;
+  try {
+    command.execute(msg, args);
+  } catch (error) {
+    console.error(error);
+    msg.reply("there was an error trying to execute that command!");
   }
 });
 client.on("error", console.error);
