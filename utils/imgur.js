@@ -1,7 +1,7 @@
 var https = require("https");
 
 function getImages(album) {
-  return new Promise((resolve, reject) => {
+  return new Promise(function getInfo(resolve, reject) {
     var options = {
       hostname: "api.imgur.com",
       path: `/3/album/${album}/images`,
@@ -15,7 +15,11 @@ function getImages(album) {
         data += d;
       });
       res.on("end", function () {
-        resolve(JSON.parse(data).data);
+        try {
+          resolve(JSON.parse(data).data);
+        } catch (error) {
+          getInfo(resolve, reject);
+        }
       });
     });
 

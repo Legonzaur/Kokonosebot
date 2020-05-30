@@ -1,6 +1,8 @@
 require("dotenv").config();
 const fs = require("fs");
 const Discord = require("discord.js");
+const dbHandler = require("./utils/dbHandler");
+
 const client = new Discord.Client();
 client.prefix = process.env.DISCORD_PREFIX;
 
@@ -19,8 +21,22 @@ client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
 });
 
+function handleEmojis(msg, emojis) {
+  emojis = emojis.map((e) => e.match(/(?<=(\w):)\d+(?=>)/g)[0]);
+  emojis.forEach((e) => {
+    if (msg.guild.emojis.resolve(emojis[0])) {
+      dbHandler.incrementEmoji(e, msg.author.id, msg.guild.id);
+    }
+  });
+}
+
 client.on("message", (msg) => {
-  if (!msg.content.startsWith(client.prefix) || msg.author.bot) return;
+  if (msg.author.bot) return;
+  //Count emojis in msg
+  var emojis = msg.content.match(/<:\w+:(\d+)>/g);
+  if (emojis) handleEmojis(msg, emojis);
+
+  if (!msg.content.startsWith(client.prefix)) return;
   const args = msg.content.slice(client.prefix.length).split(" ");
   const commandName = args.shift().toLowerCase();
   const command =
@@ -43,6 +59,7 @@ client.on("message", (msg) => {
     });
   }
 });
+
 client.on("error", console.error);
 
 client.login(process.env.DISCORD_TOKEN);
