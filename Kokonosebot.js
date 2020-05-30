@@ -22,16 +22,19 @@ client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
 });
 
-function handleEmojis(msg, emojis) {
+async function handleEmojis(msg, emojis) {
   emojis = emojis.map((e) => e.match(/(?<=(\w):)\d+(?=>)/g)[0]);
-  emojis.forEach((e) => {
-    if (msg.guild.emojis.resolve(emojis[0])) {
-      dbHandler.incrementEmoji(e, msg.author.id, msg.guild.id);
+  emojis = [...new Set(emojis)];
+  for (var e of emojis) {
+    {
+      if (msg.guild.emojis.resolve(emojis[0])) {
+        await dbHandler.incrementEmoji(e, msg.author.id, msg.guild.id);
+      }
     }
-  });
+  }
 }
 
-client.on("message", (msg) => {
+client.on("message", async (msg) => {
   if (msg.author.bot) return;
   //Count emojis in msg
   var emojis = msg.content.match(/<:\w+:(\d+)>/g);
@@ -47,7 +50,7 @@ client.on("message", (msg) => {
     );
   if (!command) return;
   try {
-    command.execute(msg, args);
+    await command.execute(msg, args);
   } catch (error) {
     console.error(error);
     msg.reply(

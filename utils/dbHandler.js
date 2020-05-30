@@ -59,11 +59,19 @@ class DbHandler {
   getTopEmojiGuild(guildID) {
     return new Promise((resolve, reject) => {
       MongoClient.connect(url, async (err, db) => {
-        if (err) reject(err);
+        if (err) {
+          eject(err);
+          return;
+        }
         var dbo = db.db("Kokonosebot");
         var guildData = await dbo
           .collection("guild")
           .findOne({ guildID: guildID });
+        if (!guildData) {
+          reject("No database found");
+          return;
+        }
+
         var emojiList = guildData.emoji;
 
         //adds total
@@ -72,7 +80,6 @@ class DbHandler {
           //sorts membersID
 
           for (let [memberID, value] of Object.entries(members.guildMembers)) {
-            console.log(value);
             emojiList[emojiID].total += value;
           }
 
@@ -90,7 +97,6 @@ class DbHandler {
 
         let output = { sorted: keysSorted, emojis: emojiList };
 
-        //console.log(output);
         resolve(output);
       });
     });
