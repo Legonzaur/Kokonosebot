@@ -3,6 +3,7 @@ const url = "mongodb://localhost:27017/";
 function reducer(acc, val) {
   return val.count + acc;
 }
+
 class Emoji {
   constructor() {}
   guildMembers = [];

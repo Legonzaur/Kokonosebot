@@ -1,6 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const Discord = require("discord.js");
+
 const dbHandler = require("./utils/dbHandler");
 
 const client = new Discord.Client();
